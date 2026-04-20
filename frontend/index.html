@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Manager</title>
+  <meta name="description" content="A fast, secure task manager with JWT authentication. Organize your tasks with filters, pagination, and a clean interface." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════ AUTH SECTION ══════════════════ -->
+  <section id="auth-section">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <span class="logo-icon">✓</span>
+        <h1>Task Manager</h1>
+        <p class="auth-subtitle">Stay organized, stay ahead</p>
+      </div>
+
+      <!-- Tab switcher -->
+      <div class="auth-tabs" role="tablist">
+        <button id="tab-login" class="auth-tab active" onclick="showAuthForm('login')" role="tab" aria-selected="true">Login</button>
+        <button id="tab-register" class="auth-tab" onclick="showAuthForm('register')" role="tab" aria-selected="false">Register</button>
+      </div>
+
+      <!-- Login form -->
+      <form id="login-form" class="auth-form" onsubmit="handleLogin(event)" novalidate>
+        <div class="field-group">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" placeholder="you@example.com" autocomplete="email" required />
+        </div>
+        <div class="field-group">
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+        </div>
+        <button id="login-submit-btn" type="submit" class="btn btn-primary">
+          <span class="btn-text">Sign In</span>
+          <span class="btn-loading" hidden>Signing in…</span>
+        </button>
+        <p class="error-msg" id="login-error" role="alert"></p>
+      </form>
+
+      <!-- Register form -->
+      <form id="register-form" class="auth-form hidden" onsubmit="handleRegister(event)" novalidate>
+        <div class="field-group">
+          <label for="reg-username">Username</label>
+          <input id="reg-username" type="text" placeholder="johndoe" autocomplete="username" required minlength="3" />
+        </div>
+        <div class="field-group">
+          <label for="reg-email">Email</label>
+          <input id="reg-email" type="email" placeholder="you@example.com" autocomplete="email" required />
+        </div>
+        <div class="field-group">
+          <label for="reg-password">Password</label>
+          <input id="reg-password" type="password" placeholder="min 6 characters" autocomplete="new-password" required minlength="6" />
+        </div>
+        <button id="register-submit-btn" type="submit" class="btn btn-primary">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-loading" hidden>Creating…</span>
+        </button>
+        <p class="error-msg" id="register-error" role="alert"></p>
+        <p class="success-msg" id="register-success" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ══════════════════ DASHBOARD SECTION ══════════════════ -->
+  <section id="dashboard-section" class="hidden">
+    <header class="dash-header">
+      <div class="dash-brand">
+        <span class="logo-icon-sm">✓</span>
+        <span class="brand-name">Task Manager</span>
+      </div>
+      <div class="dash-user">
+        <span id="username-display" class="username-chip"></span>
+        <button id="logout-btn" class="btn btn-ghost" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <main class="dash-main">
+
+      <!-- Create task card -->
+      <div class="card create-card">
+        <h2>New Task</h2>
+        <form id="create-task-form" onsubmit="createTask(event)" novalidate>
+          <div class="create-row">
+            <input id="task-title" type="text" placeholder="What needs to be done?" required />
+            <textarea id="task-description" placeholder="Add a description (optional)" rows="2"></textarea>
+            <button id="add-task-btn" type="submit" class="btn btn-primary">
+              <span class="btn-text">+ Add Task</span>
+              <span class="btn-loading" hidden>Adding…</span>
+            </button>
+          </div>
+          <p class="error-msg" id="create-error" role="alert"></p>
+        </form>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar" role="group" aria-label="Task filters">
+        <button id="filter-all" class="filter-btn active" onclick="setFilter(null)">All</button>
+        <button id="filter-pending" class="filter-btn" onclick="setFilter(false)">Pending</button>
+        <button id="filter-completed" class="filter-btn" onclick="setFilter(true)">Completed</button>
+      </div>
+
+      <!-- Task list -->
+      <div id="task-list" aria-live="polite" aria-label="Task list">
+        <div class="loading-state">Loading tasks…</div>
+      </div>
+
+      <!-- Pagination -->
+      <div id="pagination" class="pagination"></div>
+
+    </main>
+  </section>
+
+  <!-- Load config before app logic — config.js sets window.API_BASE_URL -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
