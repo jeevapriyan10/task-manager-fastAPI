@@ -1,13 +1,25 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 from app.routers import auth, tasks
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: create all tables
+    Base.metadata.create_all(bind=engine)
+    yield
+    # Shutdown: nothing needed
+
+
 app = FastAPI(
     title="Task Manager API",
     description="FastAPI + SQLAlchemy task manager with JWT authentication",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # CORS
@@ -22,11 +34,6 @@ app.add_middleware(
 # Routers
 app.include_router(auth.router, prefix="/auth")
 app.include_router(tasks.router, prefix="/tasks")
-
-
-@app.on_event("startup")
-def on_startup():
-    Base.metadata.create_all(bind=engine)
 
 
 @app.get("/", tags=["root"])
