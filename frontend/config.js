@@ -1,0 +1,1 @@
+window.API_BASE_URL = "https://task-manager-api-z806.onrender.com";
