@@ -6,8 +6,8 @@ A full-stack task manager with **FastAPI** backend and **Vanilla JS** frontend, 
 
 | Service | URL |
 |---------|-----|
-| Frontend (GitHub Pages) | `https://<your-username>.github.io/<repo-name>/frontend/` |
-| API Docs (Render) | `https://<your-render-app>.onrender.com/docs` |
+| Frontend (GitHub Pages) | [Website](https://jeevapriyan10.github.io/task-manager-fastAPI/) |
+| API Docs (Render) | [Docs](https://task-manager-api-z806.onrender.com/docs) |
 
 ---
 
