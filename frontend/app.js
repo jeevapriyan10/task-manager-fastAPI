@@ -173,21 +173,19 @@ function renderTasks(data) {
   }
 
   const html = data.items.map(task => `
-    <div class="task-card ${task.completed ? "is-completed" : ""}" id="task-card-${task.id}">
+    <div class="task-card ${task.completed ? "done" : ""}" id="task-card-${task.id}">
       <div class="task-body">
         <div class="task-title">${escHtml(task.title)}</div>
         ${task.description ? `<div class="task-desc">${escHtml(task.description)}</div>` : ""}
-        <div class="task-meta">
-          ${task.completed
-            ? `<span class="status-badge badge-completed">✓ Completed</span>`
-            : `<span class="status-badge badge-pending">⏳ Pending</span>`}
-        </div>
+        <span class="task-badge ${task.completed ? "badge-done" : "badge-pending"}">
+          ${task.completed ? "Completed" : "Pending"}
+        </span>
       </div>
       <div class="task-actions">
         ${!task.completed
-          ? `<button class="btn btn-sm btn-complete" onclick="markComplete(${task.id})">Mark Complete</button>`
+          ? `<button class="btn btn-sm btn-done" onclick="markComplete(${task.id})">Done</button>`
           : ""}
-        <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})">Delete</button>
+        <button class="btn btn-sm btn-del" onclick="deleteTask(${task.id})">Delete</button>
       </div>
     </div>
   `).join("");
@@ -200,11 +198,11 @@ function renderPagination(data) {
   if (data.pages <= 1) { container.innerHTML = ""; return; }
 
   container.innerHTML = `
-    <button class="btn btn-ghost btn-sm"
+    <button class="btn btn-sm btn-outline"
       onclick="loadTasks(${data.page - 1})"
       ${data.page <= 1 ? "disabled" : ""}>&larr; Prev</button>
-    <span class="page-info">Page ${data.page} of ${data.pages}</span>
-    <button class="btn btn-ghost btn-sm"
+    <span>Page ${data.page} of ${data.pages}</span>
+    <button class="btn btn-sm btn-outline"
       onclick="loadTasks(${data.page + 1})"
       ${data.page >= data.pages ? "disabled" : ""}>Next &rarr;</button>
   `;
