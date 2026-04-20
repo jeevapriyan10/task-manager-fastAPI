@@ -10,7 +10,13 @@ from app.routers import auth, tasks
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: create all tables
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        import traceback
+        print("\n[STARTUP ERROR] Failed to connect to database or create tables:")
+        traceback.print_exc()
+        raise
     yield
     # Shutdown: nothing needed
 
